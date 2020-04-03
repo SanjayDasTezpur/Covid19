@@ -1,0 +1,10 @@
+server:
+  port: 8082
+
+covid19:
+  url: "https://api.covid19india.org"
+  api:
+    districWise: "/state_district_wise.json"
+    stateWiseV2: "/data.json"
+ne:
+  states: "Assam,Arunachal Pradesh,Mizoram,Manipur"

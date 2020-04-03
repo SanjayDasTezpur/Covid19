@@ -11,8 +11,15 @@
         vm.employeeList = [];
         vm.dataLength = 0;
         vm.states = [];
+        vm.template = [];
         vm.allResponseData = {};
+        vm.contribute = 'https://github.com/SanjayDasTezpur/Covid19';
         vm.loadState = loadState;
+        vm.allTotal = {
+            active: 0,
+            confirmed: 0,
+            deaths: 0
+        };
         var colDef = [
             {headerName: 'District', field: 'distric', width: 100, filter: 'agTextColumnFilter'},
             {headerName: 'Total Case', field: 'totalCase', width: 100, filter: 'agTextColumnFilter'},
@@ -42,6 +49,7 @@
         function getAllNEState() {
             webApi.getAllNEState().then(function (response) {
                 var gridValue = [];
+                vm.template = [];
                 if (response) {
                     vm.allResponseData = response.data;
                     var allState = response.data.data;
@@ -51,6 +59,8 @@
                     statesName.forEach(function (stateName) {
                         var districtData = allState[stateName].districtData;
                         var disricNames = Object.keys(districtData);
+                        var totObj = vm.allResponseData.overview[stateName];
+                        calc(totObj);
                         disricNames.forEach(function (dis) {
                             var obj = {};
                             obj.state = stateName;
@@ -64,17 +74,36 @@
                     vm.gridOptions.data = gridValue;
                     vm.gridOptions.rowData = gridValue;
                     vm.dataLength = vm.gridOptions.data.length;
+                    vm.active = vm.allTotal.active;
+                    vm.confirmed = vm.allTotal.confirmed;
+                    vm.death = vm.allTotal.deaths;
+                    templateLoad();
                 }
             });
         }
 
+        function calc(totObj) {
+            vm.allTotal.confirmed = vm.allTotal.confirmed + (totObj.confirmed ? Number(totObj.confirmed) : 0);
+            vm.allTotal.active = vm.allTotal.active + (totObj.active ? Number(totObj.active) : 0);
+            vm.allTotal.deaths = vm.allTotal.deaths + (totObj.deaths ? Number(totObj.deaths) : 0);
+        }
+
+        function templateLoad() {
+            vm.template.push({name: vm.state ? 'State: ' + vm.state : 'All NorthEast', style: 'btn btn-primary'},
+                {name: 'Active: ' + vm.active, style: 'btn btn-info'},
+                {name: 'Confirmed: ' + vm.confirmed, style: 'btn btn-warning'},
+                {name: 'Deaths: ' + vm.death, style: 'btn btn-danger'});
+        }
+
         function byState(stateName) {
+            vm.template = [];
             vm.state = stateName;
             var gridValue = [];
             var allState = vm.allResponseData.data;
             vm.active = vm.allResponseData.overview[stateName].active;
             vm.confirmed = vm.allResponseData.overview[stateName].confirmed;
             vm.death = vm.allResponseData.overview[stateName].deaths;
+            templateLoad();
             var districtData = allState[stateName].districtData;
             var disricNames = Object.keys(districtData);
             disricNames.forEach(function (dis) {

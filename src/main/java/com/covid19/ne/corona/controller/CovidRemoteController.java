@@ -2,7 +2,7 @@ package com.covid19.ne.corona.controller;
 
 /* sanjayda created on 4/2/2020 inside the package - com.covid19.ne.corona.controller */
 
-import com.covid19.ne.corona.service.Covid19DataFetcherService;
+import com.covid19.ne.corona.service.ifaces.ICovid19DataFetcher;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,7 +12,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RequestMapping("/api")
 public class CovidRemoteController {
-    private final Covid19DataFetcherService service;
+
+    private final ICovid19DataFetcher service;
 
     @GetMapping("/nestate/district")
     public Object getNEStateData() {

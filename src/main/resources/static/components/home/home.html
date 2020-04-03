@@ -4,22 +4,23 @@
         <div class="row">
             <div class='col-sm-12' ng-if="vm.states.length>0">
                 <span ng-repeat="state in vm.states">
-                    <button type="button" ng-click="vm.loadState(state)">{{state}}</button>
+                    <button class="btn btn-info" type="button" ng-click="vm.loadState(state)">{{state}}</button>
                 </span>
                 <div class="accordion" id="accordionExample">
                     <div class="card">
                         <div>
                             <div ng-if="vm.dataLength>0">
-                                <div class="card-header" id="headingTwo" style="background-color: #571e0c; color: white">
-                                    <h2 class="mb-0">
+                                <div class="card-header" id="headingTwo"
+                                     style="background-color: #e3e2f3; color: white">
+                                    <h2 class="mb-0" style="color: #403baf">
                                         <label>District Wise Details [Last Updated On : {{vm.lastUpdatedTime}}]</label>
                                     </h2>
-                                    <h4 class="mb-0">
-                                        <label>State: {{vm.state}} Active: {{vm.active}} Confirmed : {{vm.confirmed}} Death: {{vm.death}}</label>
-                                    </h4>
                                 </div>
+                                <span ng-repeat="val in vm.template">
+                                   <button ng-class="val.style" type="button">{{val.name}}</button>
+                                </span>
                                 <div ng-if="vm.gridOptions.data.length>0">
-                                    <div ag-grid="vm.gridOptions" class="ag-theme-fresh"
+                                    <div ag-grid="vm.gridOptions" class="ag-theme-balham-dark"
                                          style="width:100%;height:100%;"></div>
                                 </div>
                             </div>
@@ -33,3 +34,13 @@
         </div>
     </div>
 </div>
+<!-- Footer -->
+<footer class="page-footer font-small">
+    <div class="footer-copyright text-center py-3"> Source:
+        <a class="blue" href="https://www.covid19india.org"> covid19india.org | </a>
+        <a style="color: black" ng-href="{{vm.contribute}}"> <i class="fa fa-github" aria-hidden="true"></i> Contribute
+            on GitHub</a>
+        <span class="blue">| Special Thanks covid19india for open API support</span>
+    </div>
+</footer>
+<!-- Footer -->

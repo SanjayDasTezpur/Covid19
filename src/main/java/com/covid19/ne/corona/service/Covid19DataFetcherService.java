@@ -3,58 +3,87 @@ package com.covid19.ne.corona.service;
 /* sanjayda created on 4/2/2020 inside the package - com.covid19.ne.corona.service */
 
 import com.covid19.ne.corona.entities.ResponseDto;
-import com.covid19.ne.corona.service.ifaces.IService;
+import com.covid19.ne.corona.operations.ResultPrepare;
+import com.covid19.ne.corona.service.ifaces.ICovid19DataFetcher;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import lombok.val;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestTemplate;
 
+import javax.annotation.PostConstruct;
 import java.io.IOException;
 import java.util.*;
-import java.util.stream.Collectors;
+
+import static com.covid19.ne.corona.constants.GlobalConstants.COMMA_SEPARATOR;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class Covid19DataFetcherService implements IService {
-    public static final String KEY_VALUES = "key_values";
-    public static final String LASTUPDATEDTIME = "lastupdatedtime";
-    public static final String STATEWISE = "statewise";
-    String url = "https://api.covid19india.org";
-    String districWise = "/state_district_wise.json";
-    String districWiseV2 = "/data.json";
-    List<String> northEastStates = new ArrayList<>(Arrays.asList("Assam","Arunachal Pradesh", "Mizoram", "Manipur"));
+public class Covid19DataFetcherService implements ICovid19DataFetcher {
 
-    private final RestTemplate restTemplate = new RestTemplate();
+    @Value("${ne.states:Assam}")
+    private String configuredStates;
 
-    public String getAllState() {
-        log.info("GOing to fetch all data");
-        return restTemplate.getForObject(getURL(url, districWise), String.class);
+    @Value("${covid19.url:https://api.covid19india.org}")
+    private String url;
+
+    @Value("${covid19.api.districWise:/state_district_wise.json}")
+    private String districWise;
+
+    @Value("${covid19.api.stateWiseV2:/data.json}")
+    private String stateWiseV2 = "/data.json";
+
+    private List<String> northEastStates;
+
+
+    private RestTemplate restTemplate;
+
+    @PostConstruct
+    public void initService() {
+        log.info("Initiating {} with root uri {} ...", getName(), this.url);
+        this.restTemplate = new RestTemplate();
+        northEastStates = new ArrayList<>(Arrays.asList(configuredStates.split(COMMA_SEPARATOR)));
     }
 
+    @Override
+    public String getName() {
+        return getClass().getSimpleName();
+    }
+
+    @Override
+    public String getDistrictWise() {
+        log.info("getAllState()- Going to fetch all data");
+        Optional<String> url = getURL(this.url, districWise);
+        return url.map(this::httpGet).orElse(null);
+    }
+
+    @Override
     public String getAllStateV2() {
-        log.info("GOing to fetch all data");
-        return restTemplate.getForObject(getURL(url, districWiseV2), String.class);
+        log.info("getAllStateV2() - Going to fetch all data");
+        Optional<String> url = getURL(this.url, stateWiseV2);
+        return url.map(this::httpGet).orElse(null);
     }
 
     @SuppressWarnings("unchecked")
+    @Override
     public Object getAllNEState() {
         ObjectMapper mapper = new ObjectMapper();
         try {
             Map<String, Object> result = new TreeMap<>();
-            Map<String, Object> map = mapper.readValue(getAllState(), Map.class);
-            Map<String, Object> allMap = mapper.readValue(getAllStateV2(), Map.class);
+            Map<String, Object> districtWiseMap = mapper.readValue(getDistrictWise(), Map.class);
+            Map<String, Object> stateWiseMap = mapper.readValue(getAllStateV2(), Map.class);
             Map<String, Object> overview = new TreeMap<>();
-            northEastStates.forEach(state -> {
-                getDeathByState(allMap, state).ifPresent(data -> {
-                    overview.put(state, data);
-                });
-            });
-            String lastUpdatedTime = getLastUpdatedTime(allMap);
-            map.entrySet().stream().filter(entry -> northEastStates.contains(entry.getKey()))
-                    .forEach(filteredEntry -> result.put(filteredEntry.getKey(), filteredEntry.getValue()));
+            String lastUpdatedTime = ResultPrepare.builder()
+                    .result(result)
+                    .districtResponse(districtWiseMap)
+                    .stateResponse(stateWiseMap)
+                    .overview(overview)
+                    .northEastStates(northEastStates)
+                    .build()
+                    .invoke();
             return new ResponseDto(lastUpdatedTime, result, overview);
         } catch (IOException e) {
             log.error("Caught IOException: {} ", e.getMessage());
@@ -64,33 +93,27 @@ public class Covid19DataFetcherService implements IService {
         return "";
     }
 
-    @SuppressWarnings("unchecked")
-    private Optional<Object> getDeathByState(Map allMap, String state) {
-        return ((List) allMap.get(STATEWISE)).stream().filter(mp -> {
-            return ((Map) mp).get("state").toString().equalsIgnoreCase(state);
-        }).findFirst();
+
+    private String httpGet(String url) {
+        try {
+            return restTemplate.getForObject(url, String.class);
+        } catch (Exception ex) {
+            log.error("Error in httpGet() - {}", ex.getMessage());
+        }
+        return null;
     }
 
-    private String getLastUpdatedTime(Map<String, Object> allMap) {
-        if (null == allMap) {
-            return "";
+    private static Optional<String> getURL(String uri, String api) {
+        if (StringUtils.isEmpty(uri)) {
+            log.error("Error getURL() - URI - first param cannot be empty");
+            return Optional.empty();
         }
-        if (null == allMap.get(KEY_VALUES) || ((List) allMap.get(KEY_VALUES)).size() == 0) {
-            return "";
+        if (StringUtils.isEmpty(api)) {
+            log.warn("Warning getURL() - api is empty, returning only given URI");
+            return Optional.of(uri);
         }
-        if (null == ((Map) (((List) allMap.get(KEY_VALUES)).get(0))).get(LASTUPDATEDTIME)) {
-            return "";
-        }
-        return ((Map) (((List) allMap.get(KEY_VALUES)).get(0))).get(LASTUPDATEDTIME).toString();
-    }
-
-    private static String getURL(String uri, String api) {
-        return uri + api;
-    }
-
-    @Override
-    public String getName() {
-        return Covid19DataFetcherService.class.getName();
+        StringBuilder sb = new StringBuilder(uri);
+        return Optional.of(sb.append(api).toString());
     }
 }
 
