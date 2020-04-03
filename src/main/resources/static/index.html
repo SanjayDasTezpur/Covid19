@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html class="no-js" ng-app="app" style="overflow:scroll">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <base href="/">
+    <title data-ng-bind="Employee"></title>
+    <link href="/bower_components/bootstrap/dist/css/bootstrap.css" rel="stylesheet"/>
+    <link href="/styles/main.css" rel="stylesheet">
+    <link href="static/styles/main.css" rel="stylesheet">
+</head>
+<body>
+<script src="bower_components/angular/angular.min.js"></script>
+<script src="bower_components/json3/lib/json3.min.js"></script>
+<script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
+<script src="bower_components/angular-route/angular-route.js"></script>
+<script src="bower_components/angular-route/angular-route.min.js"></script>
+<script src="bower_components/ag-grid-community/dist/ag-grid-community.js"></script>
+
+<script src="components/app.module.js"></script>
+
+<script src="components/services/app.services.js"></script>
+<script src="components/services/webApi.js"></script>
+<script src="components/page/navCtrl.js"></script>
+<div ng-include="'components/page/navBar.html'"></div>
+<div class="container">
+    <div ng-view></div>
+</div>
+
+<script src="components/home/home.module.js"></script>
+<script src="components/home/config.route.js"></script>
+<script src="components/home/homeCtrl.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,16 @@
+{
+  "name": "employee",
+  "version": "1.0.0",
+  "dependencies": {
+    "ag-grid-community": "~20.0.0",
+    "json3": "~3.2.6",
+    "bootstrap": "~4.0.0",
+    "angular-route": "~1.7.x",
+    "angular-bootstrap": "~1.2.0"
+  },
+  "resolutions": {
+    "bootstrap": "~3.3.5",
+    "angular": "~1.5.8",
+    "angular-bootstrap": "~1.2.0"
+  }
+}

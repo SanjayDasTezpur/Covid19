@@ -1,0 +1,15 @@
+{
+  "name": "corona-covid19",
+  "version": "1.0.0",
+  "description": "Corona Update For NorthEast India",
+  "main": "\t",
+  "dependencies": {
+    "bower": "^1.8.8"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Sanjay Das",
+  "license": "ISC"
+}

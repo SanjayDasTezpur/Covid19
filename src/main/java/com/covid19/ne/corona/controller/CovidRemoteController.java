@@ -1,0 +1,24 @@
+package com.covid19.ne.corona.controller;
+
+/* sanjayda created on 4/2/2020 inside the package - com.covid19.ne.corona.controller */
+
+import com.covid19.ne.corona.service.Covid19DataFetcherService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+@RequiredArgsConstructor
+@RequestMapping("/api")
+public class CovidRemoteController {
+    private final Covid19DataFetcherService service;
+
+    @GetMapping("/nestate/district")
+    public Object getNEStateData() {
+        return service.getAllNEState();
+    }
+
+}
+
+
