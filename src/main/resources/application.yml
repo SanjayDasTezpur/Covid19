@@ -1,5 +1,5 @@
 server:
-  port: 8082
+  port: 8088
 
 covid19:
   url: "https://api.covid19india.org"

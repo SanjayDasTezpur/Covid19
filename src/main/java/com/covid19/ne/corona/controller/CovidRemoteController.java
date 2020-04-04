@@ -2,6 +2,7 @@ package com.covid19.ne.corona.controller;
 
 /* sanjayda created on 4/2/2020 inside the package - com.covid19.ne.corona.controller */
 
+import com.covid19.ne.corona.aspects.HitCount;
 import com.covid19.ne.corona.service.ifaces.ICovid19DataFetcher;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,6 +19,11 @@ public class CovidRemoteController {
     @GetMapping("/nestate/district")
     public Object getNEStateData() {
         return service.getAllNEState();
+    }
+
+    @GetMapping("/totalhit/details")
+    public Object getHitDetails() {
+        return HitCount.getHitDetails();
     }
 
 }
