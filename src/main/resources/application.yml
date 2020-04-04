@@ -2,6 +2,9 @@ server:
   port: 8088
 
 covid19:
+  frequency: "120000"
+  filePath: "/home/sanjaydas_32100/workspace/covid19/data"
+  #filePath: "C:\\Users\\sanjayda\\Desktop\\Sanjay Personal"
   url: "https://api.covid19india.org"
   api:
     districWise: "/state_district_wise.json"

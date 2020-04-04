@@ -23,12 +23,16 @@ repositories {
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-web'
-	implementation 'org.springframework.boot:spring-boot-starter-aop'
-	compileOnly 'org.projectlombok:lombok'
-	compileOnly 'org.springframework:spring-aop'
-	compileOnly 'org.aspectj:aspectjweaver'
-	developmentOnly 'org.springframework.boot:spring-boot-devtools'
-	annotationProcessor 'org.projectlombok:lombok'
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-aop'
+    compileOnly 'org.projectlombok:lombok'
+    compileOnly 'org.springframework:spring-aop'
+    compileOnly 'org.aspectj:aspectjweaver'
+
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+    annotationProcessor 'org.projectlombok:lombok'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+    // Al Third Party With VERSION NUMVER
+    implementation 'com.google.code.gson:gson'
 }
