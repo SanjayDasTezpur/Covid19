@@ -4,7 +4,7 @@
         .module('app.home')
         .controller('homeCtrl', homeCtrl);
 
-    function homeCtrl(webApi) {
+    function homeCtrl(webApi, $scope) {
         var vm = this;
         vm.gridApi = undefined;
         vm.pageName = 'Covid-19 NE Updates';
@@ -20,6 +20,7 @@
             confirmed: 0,
             deaths: 0
         };
+        vm.grapghData = {};
         var colDef = [
             {headerName: 'District', field: 'distric', width: 100, filter: 'agTextColumnFilter'},
             {headerName: 'Total Case', field: 'totalCase', width: 100, filter: 'agTextColumnFilter'},
@@ -36,14 +37,14 @@
         }
 
         function _setupMainView() {
-            getAllNEState();
+            getGraphsData();
         }
 
         function loadState(state) {
             var value = byState(state);
             vm.gridApi.api.setRowData([]);
             vm.gridApi.api.setRowData(value);
-            console.log(value);
+            loadChart(state);
         }
 
         function getAllNEState() {
@@ -51,6 +52,7 @@
                 var gridValue = [];
                 vm.template = [];
                 if (response) {
+                    loadChart(undefined);
                     vm.allResponseData = response.data;
                     var allState = response.data.data;
                     vm.lastUpdatedTime = response.data.lastUpdateTime;
@@ -77,6 +79,17 @@
                     vm.active = vm.allTotal.active;
                     vm.confirmed = vm.allTotal.confirmed;
                     vm.death = vm.allTotal.deaths;
+                    templateLoad();
+                }
+            });
+        }
+
+        function getGraphsData() {
+            webApi.getGraphData().then(function (response) {
+                vm.template = [];
+                if (response) {
+                    getAllNEState();
+                    vm.grapghData = response.data;
                     templateLoad();
                 }
             });
@@ -137,6 +150,37 @@
         function getGrid(gridApi) {
             vm.gridApi = gridApi;
             gridApi.api.sizeColumnsToFit();
+        }
+
+        function loadChart(state) {
+            try{
+                 var graphData = vm.grapghData;
+                    if (state) {
+                        var newYdata = [];
+                        console.log(state);
+                        var districts = Object.keys(vm.allResponseData.data[state].districtData);
+                        vm.grapghData.ydata.forEach(function (data) {
+                            if (districts.indexOf(data.name) >= 0) {
+                                newYdata.push(data);
+                            }
+                        });
+                        $scope.lineChartYData = newYdata;
+                        return;
+                    }
+                    $scope.xname = 'States';
+                    $scope.yname = 'Confirmed';
+
+                    var data = {
+                        "xData": graphData.xdataV2,
+                        "yData": graphData.ydata,
+                    };
+
+                    $scope.lineChartYData = data.yData
+                    $scope.lineChartXData = data.xData
+            } catch (e){
+                console.log('Error in - loadChart() ');
+            }
+
         }
     }
 })();

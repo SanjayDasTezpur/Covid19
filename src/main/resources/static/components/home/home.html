@@ -12,20 +12,28 @@
                             <div ng-if="vm.dataLength>0">
                                 <div class="card-header" id="headingTwo"
                                      style="background-color: #e3e2f3; color: white">
-                                    <h2 class="mb-0" style="color: #403baf">
-                                        <label>District Wise Details [Last Updated On : {{vm.lastUpdatedTime}}]</label>
-                                    </h2>
+                                    <h5 class="mb-0" style="color: #403baf">
+                                        <label><i class="fa fa-area-chart" aria-hidden="true"></i> District Wise
+                                            Details:: <i class="fa fa-clock-o" aria-hidden="true"></i>
+                                            Last Updated On : {{vm.lastUpdatedTime}}</label>
+                                    </h5>
                                 </div>
                                 <span ng-repeat="val in vm.template">
                                    <button ng-class="val.style" type="button">{{val.name}}</button>
                                 </span>
+                                <div ng-if="vm.grapghData.xdata && vm.grapghData.ydata">
+                                    <chart title="Statistics" xData="lineChartXData" yData="lineChartYData"
+                                           xName="States/Districts" yName="No Of Confirmed Cases"
+                                           subtitle="Get Statistics"></chart>
+                                    <br>
+                                </div>
                                 <div ng-if="vm.gridOptions.data.length>0">
                                     <div ag-grid="vm.gridOptions" class="ag-theme-balham-dark"
                                          style="width:100%;height:100%;"></div>
                                 </div>
                             </div>
                             <div class="card-body" ng-if="vm.dataLength==0">
-                                No Employee Record Available
+                                No Record Available
                             </div>
                         </div>
                     </div>

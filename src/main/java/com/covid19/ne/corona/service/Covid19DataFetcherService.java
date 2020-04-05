@@ -34,7 +34,7 @@ public class Covid19DataFetcherService implements ICovid19DataFetcher {
     private String districWise;
 
     @Value("${covid19.api.stateWiseV2:/data.json}")
-    private String stateWiseV2 = "/data.json";
+    private String stateWiseV2;
 
     private List<String> northEastStates;
 

@@ -13,7 +13,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.PostConstruct;
-import java.util.Optional;
+import java.util.*;
 
 @Slf4j
 @Repository
@@ -38,6 +38,17 @@ public class Covid19Repository {
         DailyDataPersistenct dailyDataPersistenc = new DailyDataPersistenct(data, DateUtility.getDate());
         dailyDataPersistenc.makePersistable();
         getFilePath(dailyDataPersistenc.getDate()).ifPresent(path -> filePersistency.save(dailyDataPersistenc, path));
+    }
+
+    public Set<IPersistency> getAll() {
+        List savedObject = filePersistency.getSavedObject();
+        Set<IPersistency> result = new TreeSet<>();
+        for (Object data : savedObject) {
+            if (data instanceof IPersistency) {
+                result.add((IPersistency) data);
+            }
+        }
+        return result;
     }
 
     private Optional<String> getFilePath(String suffix) {

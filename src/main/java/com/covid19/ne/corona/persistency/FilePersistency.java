@@ -10,18 +10,22 @@ import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.*;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Slf4j
 public class FilePersistency<T extends IPersistency> {
 
-    private String FILEPATH;
+    private final String directory;
     private static FileInputStream fi;
     private static ObjectInputStream oi;
     private static FileOutputStream fileOut;
     private static ObjectOutputStream objectOut;
 
-    public FilePersistency(String FILEPATH) {
-        this.FILEPATH = FILEPATH;
+    public FilePersistency(String directory) {
+        this.directory = directory;
     }
 
     @Getter
@@ -35,12 +39,12 @@ public class FilePersistency<T extends IPersistency> {
             return;
         }
         try {
-            createIfNotExists(FILEPATH);
-            deleteIfExists(FILEPATH + fileName);
-            fileOut = new FileOutputStream(FILEPATH + fileName);
+            createIfNotExists(directory);
+            deleteIfExists(directory + fileName);
+            fileOut = new FileOutputStream(directory + fileName);
             objectOut = new ObjectOutputStream(fileOut);
             objectOut.writeObject(serObj);
-            log.info("The Object  was succesfully written to a file persistency");
+            log.info("The Object  was succesfully written to a file persistency {}", directory + fileName);
         } catch (Exception ex) {
             log.info("ERROR The Object  was not succesfully written to a file system persistency {}", ex.getMessage());
         } finally {
@@ -54,15 +58,19 @@ public class FilePersistency<T extends IPersistency> {
         }
     }
 
+    public List getSavedObject() {
+        File directory = new File(this.directory);
+        return Arrays.stream(Objects.requireNonNull(directory.listFiles())).map(File::getPath).map(this::getFromPersistency).collect(Collectors.toList());
+    }
 
     public <T> T getFromPersistency(String sFileName) {
         try {
-            fi = new FileInputStream(new File(FILEPATH + sFileName));
+            fi = new FileInputStream(new File(sFileName));
             oi = new ObjectInputStream(fi);
 
             return (T) oi.readObject();
         } catch (Exception ex) {
-            log.error("Error while fetching persistency from File System {}", ex.getMessage());
+            log.error("Error in getFromPersistency() -  while fetching persistency from File System {}", ex.getMessage());
             return null;
         } finally {
             try {
@@ -90,7 +98,7 @@ public class FilePersistency<T extends IPersistency> {
     }
 
     public boolean checkIfExists(String sPath) {
-        File directory = new File(FILEPATH + sPath);
+        File directory = new File(this.directory + sPath);
         return directory.exists();
     }
 }

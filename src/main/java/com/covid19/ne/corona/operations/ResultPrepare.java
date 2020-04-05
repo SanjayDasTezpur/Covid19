@@ -7,13 +7,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import static com.covid19.ne.corona.constants.GlobalConstants.*;
+import static com.covid19.ne.corona.constants.GlobalConstants.LASTUPDATEDTIME;
+import static com.covid19.ne.corona.constants.GlobalConstants.STATEWISE;
 
 /* sanjayda created on 4/3/2020 inside the package - com.covid19.ne.corona.operations */
 
 @Slf4j
 @Builder
 public class ResultPrepare {
+    public static final String STATE = "state";
+    public static final String TOTAL = "Total";
     private final Map<String, Object> result;
     private final Map<String, Object> districtResponse;
     private final Map<String, Object> stateResponse;
@@ -48,16 +51,28 @@ public class ResultPrepare {
     }
 
     private String getLastUpdatedTime(Map<String, Object> allMap) {
-        if (null == allMap) {
+        try {
+            if (null == allMap) {
+                return "";
+            }
+            if (null == allMap.get(STATEWISE) || ((List) allMap.get(STATEWISE)).size() == 0) {
+                return "";
+            }
+            Optional first = ((List) allMap.get(STATEWISE)).stream().filter(stData -> {
+                return ((Map) stData).get(STATE).toString().equalsIgnoreCase(TOTAL);
+            }).findFirst();
+            if (!first.isPresent()) {
+                return "";
+            }
+            Object lastUpdated = ((Map) (first.get())).get(LASTUPDATEDTIME);
+            if (null == lastUpdated) {
+                return "";
+            }
+            return lastUpdated.toString();
+        } catch (Exception e) {
+            log.error("Error in getLastUpdatedTime() - {}", e.getMessage());
             return "";
         }
-        if (null == allMap.get(KEY_VALUES) || ((List) allMap.get(KEY_VALUES)).size() == 0) {
-            return "";
-        }
-        if (null == ((Map) (((List) allMap.get(KEY_VALUES)).get(0))).get(LASTUPDATEDTIME)) {
-            return "";
-        }
-        return ((Map) (((List) allMap.get(KEY_VALUES)).get(0))).get(LASTUPDATEDTIME).toString();
     }
 }
 
