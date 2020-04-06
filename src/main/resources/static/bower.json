@@ -4,7 +4,7 @@
   "dependencies": {
     "ag-grid-community": "~20.0.0",
     "json3": "~3.2.6",
-    "bootstrap": "~4.0.0",
+    "bootstrap": "~4.4.1",
     "angular-route": "~1.7.x",
     "angular-bootstrap": "~1.2.0"
   },

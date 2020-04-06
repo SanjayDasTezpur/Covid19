@@ -20,11 +20,12 @@
             confirmed: 0,
             deaths: 0
         };
+        vm.isShowGraph = false;
         vm.grapghData = {};
         var colDef = [
             {headerName: 'District', field: 'distric', width: 100, filter: 'agTextColumnFilter'},
-            {headerName: 'Total Case', field: 'totalCase', width: 100, filter: 'agTextColumnFilter'},
-            {headerName: 'New Case', field: 'newCase', width: 100, filter: 'agTextColumnFilter'}
+            {headerName: 'Total Case', field: 'totalCase', width: 100, filter: null},
+            {headerName: 'New Case', field: 'newCase', width: 100, filter: null}
         ];
 
         activate();
@@ -32,6 +33,7 @@
         ////////////////
 
         function activate() {
+            vm.isShowGraph = screen.width > 400;
             createGrid();
             _setupMainView();
         }

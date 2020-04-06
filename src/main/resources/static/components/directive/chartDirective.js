@@ -36,6 +36,9 @@
                         }
                     },
                     plotOptions: {
+                        series: {
+                                step: 'left' // or 'center' or 'right'
+                            },
                         lineWidth: 0.5
                     },
                     yAxis: {
@@ -45,34 +48,51 @@
                         tickInterval: (attrs.yinterval) ? new Number(attrs.yinterval) : null,
                         max: attrs.ymax,
                         min: attrs.ymin
-//                    ,
-//                    plotLines:[
-//                        {
-//                            value:0,
-//                            width:1,
-//                            color:'#808080'
-//                        }
-//                    ]
                     },
                     tooltip: {
                         formatter: scope[attrs.formatter] || function () {
-                            return '<b>' + this.y + '</b>'
+                            return '<b>' + this.series.userOptions.name+ ' (' + this.y + ')' + '</b>';
                         }
                     },
                     legend: {
-                        layout: 'vertical',
-                        align: 'right',
+                        layout: 'horizontal',
+                        align: 'left',
                         verticalAlign: 'top',
                         x: -10,
                         y: 100,
                         borderWidth: 0
                     },
-                    series: [
-                        {
-                            name: 'Tokyo',
-                            data: [7.0, 6.9, 9.5, 14.5, 18.2, 21.5, 25.2, 26.5, 23.3, 18.3, 13.9, 9.6]
-                        }
-                    ]
+                    series: [],
+                    responsive: {
+                        rules: [{
+                            condition: {
+                                maxWidth: 500
+                            },
+                            chartOptions: {
+                                legend: {
+                                    align: 'center',
+                                    verticalAlign: 'bottom',
+                                    layout: 'horizontal'
+                                },
+                                yAxis: {
+                                    labels: {
+                                        align: 'left',
+                                        x: 0,
+                                        y: -5
+                                    },
+                                    title: {
+                                        text: null
+                                    }
+                                },
+                                subtitle: {
+                                    text: null
+                                },
+                                credits: {
+                                    enabled: false
+                                }
+                            }
+                        }]
+                    }
                 }
 
 
@@ -85,14 +105,11 @@
                         series: scope[attrs.ydata]
                     });
                 }, function (news) {
-                    console.log('ola')
-//                if (!attrs) return;
-                    news = JSON.parse(news)
+                    console.log('ola');
+                    news = JSON.parse(news);
                     if (!news.series) return;
-                    angular.extend(opt, news)
+                    angular.extend(opt, news);
                     console.log('opt.xAxis.title.text', opt)
-
-
                     var chart = new Highcharts.Chart(opt);
                 });
             }

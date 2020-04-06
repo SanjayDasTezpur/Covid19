@@ -21,7 +21,7 @@
                                 <span ng-repeat="val in vm.template">
                                    <button ng-class="val.style" type="button">{{val.name}}</button>
                                 </span>
-                                <div ng-if="vm.grapghData.xdata && vm.grapghData.ydata">
+                                <div ng-if="vm.grapghData.xdata && vm.grapghData.ydata && vm.isShowGraph">
                                     <chart title="Statistics" xData="lineChartXData" yData="lineChartYData"
                                            xName="States/Districts" yName="No Of Confirmed Cases"
                                            subtitle="Get Statistics"></chart>
