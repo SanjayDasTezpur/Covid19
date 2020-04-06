@@ -75,6 +75,12 @@
                             gridValue.push(obj);
                         });
                     });
+                    if(!vm.state){
+                        var newColDef = [];
+                        newColDef.push({headerName: 'State', field: 'state', width: 100, filter: 'agTextColumnFilter'});
+                        newColDef = newColDef.concat(colDef);
+                        vm.gridOptions.columnDefs = newColDef;
+                    }
                     vm.gridOptions.data = gridValue;
                     vm.gridOptions.rowData = gridValue;
                     vm.dataLength = vm.gridOptions.data.length;
