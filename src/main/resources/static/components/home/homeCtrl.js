@@ -33,7 +33,7 @@
         ////////////////
 
         function activate() {
-            vm.isShowGraph = screen.width > 400;
+            vm.isShowGraph = screen.width > 800;
             createGrid();
             _setupMainView();
         }
