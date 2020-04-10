@@ -26,7 +26,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @PostConstruct
     public void init() {
 
-        String sec = new FilePersistency<>("C:\\Users\\sanjayda\\").getTextFromSimpleFile("sec.txt");
+        String sec = new FilePersistency<>("/tmp/").getTextFromSimpleFile("sec.txt");
         this.user = sec.split(":")[0];
         this.password = sec.split(":")[1];
         this.adminUser = sec.split(":")[2];
