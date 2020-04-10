@@ -25,7 +25,9 @@ repositories {
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-aop'
-    compileOnly 'org.projectlombok:lombok'
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+
+	compileOnly 'org.projectlombok:lombok'
     compileOnly 'org.springframework:spring-aop'
     compileOnly 'org.aspectj:aspectjweaver'
 

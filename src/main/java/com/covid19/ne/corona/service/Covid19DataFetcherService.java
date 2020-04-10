@@ -6,6 +6,7 @@ import com.covid19.ne.corona.entities.ResponseDto;
 import com.covid19.ne.corona.operations.ResultPrepare;
 import com.covid19.ne.corona.service.ifaces.ICovid19DataFetcher;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -36,6 +37,7 @@ public class Covid19DataFetcherService implements ICovid19DataFetcher {
     @Value("${covid19.api.stateWiseV2:/data.json}")
     private String stateWiseV2;
 
+    @Getter
     private List<String> northEastStates;
 
 

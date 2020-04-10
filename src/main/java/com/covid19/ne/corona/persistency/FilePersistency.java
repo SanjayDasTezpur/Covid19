@@ -101,4 +101,21 @@ public class FilePersistency<T extends IPersistency> {
         File directory = new File(this.directory + sPath);
         return directory.exists();
     }
+
+    public String getTextFromSimpleFile(String fileName) {
+        StringBuilder sb = new StringBuilder();
+        File file = new File(this.directory + fileName);
+        try (FileReader fr = new FileReader(file); BufferedReader br = new BufferedReader(fr);) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                sb.append(line);
+            }
+        } catch (FileNotFoundException fnfe) {
+            log.error("FileNotFoundException in getSimpleFile() - ");
+        } catch (Exception e) {
+            log.error("Error in getSimpleFile() - {}", e.getMessage());
+        }
+
+        return sb.toString();
+    }
 }

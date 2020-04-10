@@ -33,7 +33,8 @@
         ////////////////
 
         function activate() {
-            vm.isShowGraph = screen.width > 800;
+            //vm.isShowGraph = screen.width > 800;
+            vm.isShowGraph = false;
             createGrid();
             _setupMainView();
         }
@@ -110,10 +111,12 @@
         }
 
         function templateLoad() {
+            var recovered =  vm.confirmed - vm.active - vm.death;
             vm.template.push({name: vm.state ? 'State: ' + vm.state : 'All NorthEast', style: 'btn btn-primary'},
                 {name: 'Active: ' + vm.active, style: 'btn btn-info'},
                 {name: 'Confirmed: ' + vm.confirmed, style: 'btn btn-warning'},
-                {name: 'Deaths: ' + vm.death, style: 'btn btn-danger'});
+                {name: 'Deaths: ' + vm.death, style: 'btn btn-danger'},
+                {name: 'Recovered: ' + recovered , style: 'btn btn btn-success'}); //
         }
 
         function byState(stateName) {
