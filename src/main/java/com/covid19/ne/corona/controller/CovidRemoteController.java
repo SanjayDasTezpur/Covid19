@@ -27,7 +27,6 @@ public class CovidRemoteController {
         return graphPlotService.getGraphPlotData();
     }*/
 
-
 }
 
 
