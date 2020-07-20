@@ -1,0 +1,12 @@
+#!/bin/sh
+
+STRING_LIST="corona"
+for item in $STRING_LIST
+do
+  pids=`ps -aef | grep $USER | grep $item | grep -v grep | awk '{print $2}'`
+  if [ "$pids" ]
+  then
+    echo "Killing $pids"
+    kill -9 $pids
+  fi
+done
