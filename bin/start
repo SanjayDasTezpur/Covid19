@@ -1,0 +1,3 @@
+#!/bin/sh
+
+`/urs/bin/java -jar ../build/libs/corona-v1.jar > /tmp/txt.log &`
