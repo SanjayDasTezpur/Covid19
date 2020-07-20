@@ -41,7 +41,7 @@ public class Covid19Repository {
     }
 
     public Set<IPersistency> getAll() {
-        List savedObject = filePersistency.getSavedObject();
+        List<Object> savedObject = filePersistency.getSavedObject();
         Set<IPersistency> result = new TreeSet<>();
         for (Object data : savedObject) {
             if (data instanceof IPersistency) {
@@ -56,7 +56,7 @@ public class Covid19Repository {
             return Optional.empty();
         }
         StringBuilder sb = new StringBuilder();
-        return Optional.of(sb.append(System.getProperty(FILE_SEPARATOR)).append(suffix.replaceAll(SLASH, UNDERSCORE)).toString());
+        return Optional.of(sb.append(System.getProperty(FILE_SEPARATOR)).append(suffix.replace(SLASH, UNDERSCORE)).toString());
     }
 }
 

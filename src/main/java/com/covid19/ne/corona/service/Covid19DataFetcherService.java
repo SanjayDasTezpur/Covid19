@@ -29,7 +29,7 @@ public class Covid19DataFetcherService implements ICovid19DataFetcher {
     private String configuredStates;
 
     @Value("${covid19.url:https://api.covid19india.org}")
-    private String url;
+    private String uri;
 
     @Value("${covid19.api.districWise:/state_district_wise.json}")
     private String districWise;
@@ -45,7 +45,7 @@ public class Covid19DataFetcherService implements ICovid19DataFetcher {
 
     @PostConstruct
     public void initService() {
-        log.info("Initiating {} with root uri {} ...", getName(), this.url);
+        log.info("Initiating {} with root uri {} ...", getName(), this.uri);
         this.restTemplate = new RestTemplate();
         northEastStates = new ArrayList<>(Arrays.asList(configuredStates.split(COMMA_SEPARATOR)));
     }
@@ -58,14 +58,14 @@ public class Covid19DataFetcherService implements ICovid19DataFetcher {
     @Override
     public String getDistrictWise() {
         log.info("getAllState()- Going to fetch all data");
-        Optional<String> url = getURL(this.url, districWise);
+        Optional<String> url = getURL(this.uri, districWise);
         return url.map(this::httpGet).orElse(null);
     }
 
     @Override
     public String getAllStateV2() {
         log.info("getAllStateV2() - Going to fetch all data");
-        Optional<String> url = getURL(this.url, stateWiseV2);
+        Optional<String> url = getURL(this.uri, stateWiseV2);
         return url.map(this::httpGet).orElse(null);
     }
 

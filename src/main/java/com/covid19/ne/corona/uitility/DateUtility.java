@@ -2,6 +2,8 @@ package com.covid19.ne.corona.uitility;
 
 /* sanjayda created on 4/4/2020 inside the package - com.covid19.ne.corona.uitility */
 
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import java.text.DateFormat;
@@ -11,6 +13,7 @@ import java.util.Date;
 import java.util.TimeZone;
 
 @Slf4j
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class DateUtility {
     private static final SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 

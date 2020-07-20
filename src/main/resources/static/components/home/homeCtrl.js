@@ -40,7 +40,9 @@
         }
 
         function _setupMainView() {
-            getGraphsData();
+            getAllNEState();
+            templateLoad();
+            //getGraphsData();
         }
 
         function loadState(state) {
@@ -94,14 +96,6 @@
         }
 
         function getGraphsData() {
-            webApi.getGraphData().then(function (response) {
-                vm.template = [];
-                if (response) {
-                    getAllNEState();
-                    vm.grapghData = response.data;
-                    templateLoad();
-                }
-            });
         }
 
         function calc(totObj) {

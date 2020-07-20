@@ -17,7 +17,7 @@ public class DailyCollectorService {
     private final ICovid19DataFetcher service;
     private final Covid19Repository repository;
 
-    @Scheduled(fixedDelayString = "${covid19.frequency:120000}", initialDelay = 60 * 1000)
+    //@Scheduled(fixedDelayString = "${covid19.frequency:120000}", initialDelay = 60 * 1000)
     public void storeDataDaily() {
         dailyCollect();
     }

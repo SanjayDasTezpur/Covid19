@@ -36,8 +36,8 @@ public class DailyDataPersistenct implements IPersistency {
     public int compareTo(IPersistency iPersistency) {
         try {
             SimpleDateFormat sdformat = DateUtility.getGlobalSDF();
-            String date = iPersistency.getDate();
-            Date argDate = sdformat.parse(date);
+            String persistencyDate = iPersistency.getDate();
+            Date argDate = sdformat.parse(persistencyDate);
             Date objDate = sdformat.parse(this.getDate());
             return objDate.compareTo(argDate);
         } catch (ParseException e) {

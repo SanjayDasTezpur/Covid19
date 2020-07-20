@@ -8,13 +8,14 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import java.io.Serializable;
 import java.util.*;
 
 @Data
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class GraphData {
+public class GraphData implements Serializable {
     private transient Set<Date> xData;
     private List<String> xDataV2;
     private List<YData> yData;

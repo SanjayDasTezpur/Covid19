@@ -22,10 +22,10 @@ public class CovidRemoteController {
         return service.getAllNEState();
     }
 
-    @GetMapping("/nestate/graphplot")
+    /*@GetMapping("/nestate/graphplot")
     public Object getGrap() {
         return graphPlotService.getGraphPlotData();
-    }
+    }*/
 
 }
 

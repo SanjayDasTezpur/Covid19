@@ -11,4 +11,4 @@ covid19:
     districWise: "/state_district_wise.json"
     stateWiseV2: "/data.json"
 ne:
-  states: "Assam,Arunachal Pradesh,Mizoram,Manipur,Tripura"
+  states: "Assam,Arunachal Pradesh,Mizoram,Manipur,Tripura,Meghalaya,Tripura"

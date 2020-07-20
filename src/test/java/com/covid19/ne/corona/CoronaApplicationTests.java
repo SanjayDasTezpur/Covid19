@@ -11,6 +11,7 @@ public class CoronaApplicationTests {
 
 	@Test
 	public void contextLoads() {
+
 	}
 
 }
