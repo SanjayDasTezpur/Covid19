@@ -41,12 +41,12 @@ dependencies {
 
 task npmInstall(type: Exec) {
 	description 'Running npm install task'
-	commandLine "ls", "-l"
-	commandLine "cd", "./src/main/resources/static/", "npm", "install"
+	workingDir file("$projectDir/src/main/resources/static")
+	commandLine "npm", "install"
 }
 
 task bowerInstall(type: Exec) {
 	description 'Running bower install task'
-	commandLine "ls", "-l"
-	commandLine "cd", "./src/main/resources/static", "./node_modules/bower/bin/bower", "install"
+	workingDir file("$projectDir/src/main/resources/static")
+	commandLine "./node_modules/bower/bin/bower", "install"
 }
