@@ -38,3 +38,15 @@ dependencies {
     // Al Third Party With VERSION NUMVER
     implementation 'com.google.code.gson:gson'
 }
+
+task npmInstall(type: Exec) {
+	description 'Running npm install task'
+	commandLine "ls", "-l"
+	commandLine "cd", "./src/main/resources/static/", "npm", "install"
+}
+
+task bowerInstall(type: Exec) {
+	description 'Running bower install task'
+	commandLine "ls", "-l"
+	commandLine "cd", "./src/main/resources/static", "./node_modules/bower/bin/bower", "install"
+}
